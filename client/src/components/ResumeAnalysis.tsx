@@ -1,4 +1,4 @@
-"use client";
+
 
 const ResumeAnalysis = ({ analysisResult }: any) => {
   if (!analysisResult) return null;
@@ -6,7 +6,7 @@ const ResumeAnalysis = ({ analysisResult }: any) => {
   const { score, strengths, improvements, suggestions } = analysisResult;
 
   return (
-    <div className="w-full max-w-2xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+    <div className="w-full max-w-2xl mx-auto  bg-white p-6 max-h-screen overflow-auto rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">
         ATS Analysis Results
       </h2>
