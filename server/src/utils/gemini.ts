@@ -10,7 +10,8 @@ export async function analyzeResume(resumeText: string): Promise<{
   suggestions: string[];
   error?: string;
 }> {
-  const prompt = `
+  try {
+    const prompt = `
 Analyze this resume for ATS (Applicant Tracking System) optimization. Provide:
 1. A score out of 100
 2. Key strengths
@@ -25,20 +26,33 @@ ${resumeText}
 Format response as JSON with these keys: score, strengths, improvements, suggestions
   `.trim();
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash-001",
-    contents: prompt,
-  });
-  if (!response) {
-    throw new Error("No response text from Gemini");
-  }
-  const result: any = response.text;
-  console.log(response.text);
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash-001",
+      contents: prompt,
+    });
+    
+    if (!response || !response.text) {
+      throw new Error("No response text from Gemini");
+    }
+    const textContent = response.text;
+    const jsonMatch = textContent.match(/```json\s*([\s\S]*?)\s*```/);
+    const jsonStr = jsonMatch ? jsonMatch[1] : textContent;
 
-  return {
-    score: result?.score || 0,
-    strengths: result?.strengths || [],
-    improvements: result?.improvements || [],
-    suggestions: result?.suggestions || [],
-  };
+    const result = JSON.parse(jsonStr);
+
+    return {
+      score: result?.score ?? 0,
+      strengths: result?.strengths ?? [],
+      improvements: result?.improvements ?? [],
+      suggestions: result?.suggestions ?? [],
+    };
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+    return {
+      score: 0,
+      strengths: [],
+      improvements: [],
+      suggestions: [],
+    };
+  }
 }

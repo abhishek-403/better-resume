@@ -31,7 +31,14 @@ export const resumeAnalyzer = async (req: any, res: Response) => {
     }
 
     const result = await analyzeResume(textContent);
-    res.json(result);
+    if (!result.score) {
+      res.json({
+        status: "error",
+        result: "Error analyzing resume",
+      });
+      return;
+    }
+    res.json({ status: "success", result });
     return;
   } catch (err: any) {
     console.error("Error during analysis:", err.message);

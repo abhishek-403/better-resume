@@ -5,7 +5,6 @@ import express from "express";
 import multer from "multer";
 import { resumeAnalyzer } from "./controllers/resume.controller";
 import connectDB from "./dbConnect";
-
 const upload = multer();
 connectDB();
 const app = express();
