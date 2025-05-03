@@ -3,12 +3,10 @@ import { useRef, useState } from "react";
 
 const FileUpload = ({
   onFileUpload,
-  isLoading,
-  setSelectedFile ,
+  setSelectedFile,
   selectedFile,
 }: any) => {
   const [isDragActive, setIsDragActive] = useState(false);
-  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef(null);
 
   const handleDragEnter = (e: any) => {
@@ -41,7 +39,6 @@ const FileUpload = ({
 
   const handleFileSelect = (file: any) => {
     setSelectedFile(file);
-    console.log("File selected:", file.name);
   };
 
   const triggerFileInput = () => {
@@ -126,7 +123,10 @@ const FileUpload = ({
       </div>
 
       {selectedFile && (
-        <button className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg shadow-md transition-colors duration-200">
+        <button
+          className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-lg shadow-md transition-colors duration-200"
+          onClick={onFileUpload}
+        >
           Analyze My Resume
         </button>
       )}
